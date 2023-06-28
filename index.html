@@ -145,7 +145,7 @@
       if (moves[a] === user && moves[b] === user && moves[c] === user) {
         document.querySelector('.user-move').innerHTML = `<p>User-${user} won</p>`;
         document.querySelector('.reset').innerHTML = '<p>Please Restart the game</p>';
-        setTimeout(resetGame, 5000);
+        
         return false;
       }
     }
