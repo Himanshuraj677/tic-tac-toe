@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tic Tac Toe</title>
+  <style>
+    .row1, .row2, .row3 {
+      display: flex;
+    }
+    
+    
+    .row-box {
+      border-bottom: 4px solid black;
+    }
+    
+    .col-box {
+      border-right: 4px solid black;
+    }
+    .box {
+      width: 90px;
+      height: 80px;
+      font-size: 100px;
+    }
+    .container {
+      width: 282px;
+      height: 252px;
+      margin: auto;
+    }
+    .result {
+      margin-top: 30px;
+      height: 60px;
+      background-color: grey;
+    }
+    p {
+      font-size: 30px;
+    }
+    
+    .reset-game {
+      display: block;
+      width: 90px;
+      margin: 20px auto;
+      background-color: red;
+    }
+    .box p {
+      position: relative;
+      display: inline-block;
+      bottom: 30px;
+      left: 23px;
+      margin: 0 0;
+      text-align: center;
+      font-size: 60px;
+      color: #222FBB;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row1">
+      <div class="box1 box row-box col-box" onclick="
+      fillTheBox(1);
+      "></div>
+      <div class="box2 box row-box col-box" onclick="
+      fillTheBox(2);
+      "></div>
+      <div class="box3 box row-box" onclick="
+      fillTheBox(3);
+      "></div>
+    </div>
+    <div class="row2">
+      <div class="box4 box row-box col-box" onclick="
+      fillTheBox(4);
+      "></div>
+      <div class="box5  box row-box col-box" onclick="
+      fillTheBox(5);
+      "></div>
+      <div class="box6 box row-box" onclick="
+      fillTheBox(6);
+      "></div>
+    </div>
+    <div class="row3">
+      <div class="box7 box col-box" onclick="
+      fillTheBox(7);
+      "></div>
+      <div class="box8 box col-box" onclick="
+      fillTheBox(8);
+      "></div>
+      <div class="box9 box" onclick="
+      fillTheBox(9);
+      "></div>
+    </div>
+  </div>
+  <div class="user-move"></div>
+  <div class="reset"></div>
+  <button class="reset-game" onclick="
+    resetGame ();
+  ">Restart</button>
+  
+<script>
+  document.querySelector('.user-move').innerHTML = '<p>User-X turn</p>';
+  let step = 1, stop = true;
+  let moves = ['', '', '', '', '', '', '', '', '', ''];
+  let winningCombination = [[1,2,3], [4,5,6,], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]];
+  function fillTheBox (boxNo) {
+    let isFill = document.querySelector(`.box${boxNo}`).innerText;
+    if (stop) {
+      if (isFill != '') {
+        document.querySelector('.reset').innerHTML = '<p>Already filled</p>';
+        return;
+      }
+      document.querySelector('.reset').innerHTML = '<p></p>';
+      if (step % 2 == 1) {
+        
+        document.querySelector(`.box${boxNo}`).innerHTML = `<p>X</p>`;
+        moves[boxNo] = 'X';
+        document.querySelector('.user-move').innerHTML = '<p>User-0 turn</p>';
+        stop = checkWin(moves, 'X');
+        
+      }
+      else if (step % 2 == 0) {
+        document.querySelector(`.box${boxNo}`).innerHTML = `<p>0</p>`;
+        moves[boxNo] = '0';
+        document.querySelector('.user-move').innerHTML = '<p>User-X turn</p>';
+        stop = checkWin(moves, '0');
+      }
+      if (step == 9) {
+        if (checkWin(moves, 'X')) {
+          document.querySelector('.user-move').innerHTML = `<p></p>`;
+        }
+        document.querySelector('.reset').innerHTML = '<p>Please Restart the game</p>';
+      }
+      step++;
+      
+    }
+  }
+  
+  function checkWin (moves, user) {
+    let a,b,c;
+    for (let i = 0; i < 8; i++) {
+      a = winningCombination[i][0];
+      b = winningCombination[i][1];
+      c = winningCombination[i][2];
+      if (moves[a] === user && moves[b] === user && moves[c] === user) {
+        document.querySelector('.user-move').innerHTML = `<p>User-${user} won</p>`;
+        document.querySelector('.reset').innerHTML = '<p>Please Restart the game</p>';
+        setTimeout(resetGame, 5000);
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  function resetGame () {
+    moves = ['', '', '', '', '', '', '', '', '', ''];
+    for (let i = 1; i < 10; i++) {
+      document.querySelector(`.box${i}`).innerHTML = `<p></p>`;
+    }
+    document.querySelector('.user-move').innerHTML = '<p>User-X turn</p>';
+    document.querySelector('.reset').innerHTML = '<p></p>';
+    step = 1;
+    stop = true;
+  }
+</script>
+</body>
+
+</html>
