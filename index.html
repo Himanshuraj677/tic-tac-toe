@@ -6,17 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tic Tac Toe</title>
   <style>
+    body {
+      background-color: #D3FDA9;
+    }
     .row1, .row2, .row3 {
       display: flex;
     }
     
-    
     .row-box {
-      border-bottom: 4px solid black;
+      border-bottom: 4px solid #2D3DEC;
     }
     
     .col-box {
-      border-right: 4px solid black;
+      border-right: 4px solid #2D3DEC;
     }
     .box {
       width: 90px;
@@ -28,21 +30,12 @@
       height: 252px;
       margin: auto;
     }
-    .result {
-      margin-top: 30px;
-      height: 60px;
-      background-color: grey;
-    }
+   
     p {
       font-size: 30px;
+      color: #2D3DEC;
     }
     
-    .reset-game {
-      display: block;
-      width: 90px;
-      margin: 20px auto;
-      background-color: red;
-    }
     .box p {
       position: relative;
       display: inline-block;
@@ -51,7 +44,31 @@
       margin: 0 0;
       text-align: center;
       font-size: 60px;
-      color: #222FBB;
+      color: #2D3DEC;
+    }
+    
+    .button {
+      display: flex;
+      justify-content: center;
+    }
+    .reset-game, .reset-score {
+      margin: 20px;
+      width: 90px;
+      height: 20px;
+      color: #0015FF;
+      background-color: #B6BCFF;
+    }
+    
+    .player, .score {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+    
+    .player1, .player2, .score1, .score2 {
+      margin: 5px 20px;
+      font-size: 25px;
+      color: #2D3DEC;
     }
   </style>
 </head>
@@ -94,16 +111,33 @@
   </div>
   <div class="user-move"></div>
   <div class="reset"></div>
-  <button class="reset-game" onclick="
-    resetGame ();
-  ">Restart</button>
-  
+  <div class="button">
+    <button class="reset-game" onclick="
+      resetGame ();
+    ">Restart</button>
+    <button class="reset-score" onclick="
+      resetScore ();
+    ">Reset</button>
+  </div>
+  <div class="player">
+    <div class="player1">User-X</div>
+    <div class="player2">User-0</div>
+  </div>
+  <div class="score">
+    <div class="score1">0</div>
+    <div class="score2">0</div>
+  </div>
 <script>
   document.querySelector('.user-move').innerHTML = '<p>User-X turn</p>';
   let step = 1, stop = true;
+  let score = {
+    userX: 0,
+    user0 : 0
+  }
   let moves = ['', '', '', '', '', '', '', '', '', ''];
   let winningCombination = [[1,2,3], [4,5,6,], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]];
   function fillTheBox (boxNo) {
+    
     let isFill = document.querySelector(`.box${boxNo}`).innerText;
     if (stop) {
       if (isFill != '') {
@@ -127,11 +161,14 @@
       }
       if (step == 9) {
         if (checkWin(moves, 'X')) {
-          document.querySelector('.user-move').innerHTML = `<p></p>`;
+          document.querySelector('.user-move').innerHTML = `<p>Tie</p>`;
         }
+        else score.userX--;
         document.querySelector('.reset').innerHTML = '<p>Please Restart the game</p>';
       }
       step++;
+      document.querySelector('.score1').innerText = `${score.userX}`;
+      document.querySelector('.score2').innerText = `${score.user0}`;
       
     }
   }
@@ -143,6 +180,7 @@
       b = winningCombination[i][1];
       c = winningCombination[i][2];
       if (moves[a] === user && moves[b] === user && moves[c] === user) {
+        user === 'X' ? score.userX++ : score.user0++;
         document.querySelector('.user-move').innerHTML = `<p>User-${user} won</p>`;
         document.querySelector('.reset').innerHTML = '<p>Please Restart the game</p>';
         
@@ -161,6 +199,14 @@
     document.querySelector('.reset').innerHTML = '<p></p>';
     step = 1;
     stop = true;
+  }
+  
+  function resetScore () {
+    score.userX = 0;
+    score.user0 = 0;
+    document.querySelector('.score1').innerText = '0';
+      document.querySelector('.score2').innerText = '0';
+    resetGame ();
   }
 </script>
 </body>
